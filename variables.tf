@@ -19,7 +19,12 @@ variable "eks_vpc_id" {
 variable "eks_enabled_cluster_log_types" {
     type        = list(string)
     default     = []
-    description = "A list of the desired control plane logging to enable."
+    description = "A list of the desired control plane logging to enable. ['api','audit', 'authenticator', 'controllerManager', 'scheduler']"
+}
+variable "eks_role_arn" {
+    type        = string
+    default     = ""
+    description = " The Amazon Resource Name (ARN) of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
 }
 variable "eks_version" {
     type        = string
@@ -45,6 +50,17 @@ variable "eks_security_group_ids" {
     type        = list(string)
     default     = []
     description = "List of security group IDs for the cross-account elastic network interfaces that Amazon EKS creates to use to allow communication between your worker nodes and the Kubernetes control plane."
+}
+# CLOUDWATCH
+variable "eks_cloudwatch_kms_key_id" {
+    type        = string
+    default     = ""
+    description = "The ARN of the KMS Key to use when encrypting log data."
+}
+variable "eks_cloudwatch_log_retention_in_days" {
+    type        = number
+    default     = 7
+    description = "Number of days to retain log events."
 }
 # IAM
 variable "eks_iam_role_path" {

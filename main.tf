@@ -4,7 +4,7 @@ resource "aws_eks_cluster" "main" {
     name     = var.eks_cluster_name
 
     enabled_cluster_log_types = var.eks_enabled_cluster_log_types
-    role_arn = aws_iam_role.main.arn
+    role_arn = local.eks_role_arn
     version = var.eks_version
     vpc_config {
         endpoint_private_access = var.eks_endpoint_private_access
@@ -20,14 +20,32 @@ resource "aws_eks_cluster" "main" {
     )
     
     depends_on = [
+        aws_cloudwatch_log_group.main,
         aws_iam_role_policy_attachment.main_AmazonEKSClusterPolicy,
-        aws_iam_role_policy_attachment.main_AmazonEKSServicePolicy,
+        aws_iam_role_policy_attachment.main_AmazonEKSServicePolicy
     ]
+}
+
+# CLOUDWATCH
+
+resource "aws_cloudwatch_log_group" "main" {
+    count             = length(var.eks_enabled_cluster_log_types) > 0 ? 1 : 0
+
+    name              = "/aws/eks/${var.eks_cluster_name}/cluster"
+    kms_key_id        = var.eks_cloudwatch_kms_key_id
+    retention_in_days = var.eks_cloudwatch_log_retention_in_days
+    
+    tags = merge(
+        var.tags,
+        {"Name" = var.eks_cluster_name}
+    )
 }
 
 # IAM
 
 resource "aws_iam_role" "main" {
+    count = var.eks_role_arn == "" ? 1 : 0
+
     name                  = format("%s-eks-cluster-role", var.eks_cluster_name)
     assume_role_policy    = data.aws_iam_policy_document.main_assume_role_policy.json
     force_detach_policies = true
@@ -45,6 +63,7 @@ data "aws_iam_policy_document" "main_assume_role_policy" {
         actions = [
             "sts:AssumeRole",
         ]
+        effect = "Allow"
         principals {
             type        = "Service"
             identifiers = ["eks.amazonaws.com"]
@@ -54,12 +73,16 @@ data "aws_iam_policy_document" "main_assume_role_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "main_AmazonEKSClusterPolicy" {
-    role       = aws_iam_role.main.name
+    count = var.eks_role_arn == "" ? 1 : 0
+
+    role       = aws_iam_role.main[0].name
     policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
 }
 
 resource "aws_iam_role_policy_attachment" "main_AmazonEKSServicePolicy" {
-    role       = aws_iam_role.main.name
+    count = var.eks_role_arn == "" ? 1 : 0
+
+    role       = aws_iam_role.main[0].name
     policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
 }
 
