@@ -1,45 +1,44 @@
-# REMOVE PREFIX EKS
-output "eks_cluster_id" {
+output "cluster_id" {
     value       = aws_eks_cluster.main.id
     description = "The name of the cluster."
 }
 
-output "eks_cluster_arn" {
+output "cluster_arn" {
     value       = aws_eks_cluster.main.arn
     description = "The Amazon Resource Name (ARN) of the cluster."
 }
 
-output "eks_cluster_certificate_authority" {
+output "cluster_certificate_authority" {
     value       = aws_eks_cluster.main.certificate_authority
     description = "Nested attribute containing certificate-authority-data for your cluster."
 }
 
-output "eks_cluster_endpoint" {
+output "cluster_endpoint" {
     value       = aws_eks_cluster.main.endpoint
     description = "The endpoint for your Kubernetes API server."
 }
 
-output "eks_cluster_identity" {
+output "cluster_identity" {
     value       = aws_eks_cluster.main.identity
     description = "Nested attribute containing identity provider information for your cluster."
 }
 
-output "eks_cluster_platform_version" {
+output "cluster_platform_version" {
     value       = aws_eks_cluster.main.platform_version
     description = "The platform version for the cluster."
 }
 
-output "eks_cluster_status" {
+output "cluster_status" {
     value       = aws_eks_cluster.main.status
     description = "The status of the EKS cluster. One of CREATING, ACTIVE, DELETING, FAILED."
 }
 
-output "eks_cluster_version" {
+output "cluster_version" {
     value       = aws_eks_cluster.main.version
     description = "The Kubernetes server version for the cluster."
 }
 
-output "eks_cluster_vpc_config" {
+output "cluster_vpc_config" {
     value       = aws_eks_cluster.main.vpc_config
     description = "The cluster security group that was created by Amazon EKS for the cluster. And, The VPC associated with your cluster."
 }

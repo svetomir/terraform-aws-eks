@@ -1,6 +1,5 @@
 resource "aws_eks_cluster" "main" {
-    name     = var.cluster_name
-
+    name                      = var.cluster_name
     enabled_cluster_log_types = var.enabled_cluster_log_types
     role_arn                  = local.role_arn
     version                   = var.kubernetes_version
@@ -104,12 +103,12 @@ resource "aws_security_group" "main" {
 resource "aws_security_group_rule" "cluster_ingress_internet" {
     count = var.create_additional_security_group ? 1 : 0
 
-    protocol          = "-1"
-    security_group_id = aws_security_group.main[0].id
+    protocol                 = "-1"
+    security_group_id        = aws_security_group.main[0].id
     source_security_group_id = aws_security_group.main[0].id
-    from_port         = 0
-    to_port           = 0
-    type              = "ingress"
+    from_port                = 0
+    to_port                  = 0
+    type                     = "ingress"
 }
 
 resource "aws_security_group_rule" "cluster_egress_internet" {
