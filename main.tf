@@ -86,7 +86,7 @@ resource "aws_iam_role_policy_attachment" "main_AmazonEKSServicePolicy" {
     policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
 }
 
-# # SECURITY GROUP
+# SECURITY GROUP
 
 resource "aws_security_group" "main" {
     count = length(var.eks_security_group_ids) == 0 ? 1 : 0
@@ -104,7 +104,7 @@ resource "aws_security_group_rule" "cluster_ingress_internet" {
 
     protocol          = "-1"
     security_group_id = aws_security_group.main[0].id
-    cidr_blocks       = ["0.0.0.0/0"]
+    source_security_group_id = aws_security_group.main[0].id
     from_port         = 0
     to_port           = 0
     type              = "ingress"
