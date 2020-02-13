@@ -89,7 +89,7 @@ resource "aws_iam_role_policy_attachment" "main_AmazonEKSServicePolicy" {
 # SECURITY GROUP
 
 resource "aws_security_group" "main" {
-    count = length(var.additional_security_group_ids) == 0 ? 1 : 0
+    count = var.create_additional_security_group ? 1 : 0
     
     name        = format("%s-eks-cluster-additional-sg", var.cluster_name)
     description = format("Additional security sroup for %s EKS cluster.", var.cluster_name)
@@ -102,7 +102,7 @@ resource "aws_security_group" "main" {
 }
 
 resource "aws_security_group_rule" "cluster_ingress_internet" {
-    count = length(var.additional_security_group_ids) == 0 ? 1 : 0
+    count = var.create_additional_security_group ? 1 : 0
 
     protocol          = "-1"
     security_group_id = aws_security_group.main[0].id
@@ -113,7 +113,7 @@ resource "aws_security_group_rule" "cluster_ingress_internet" {
 }
 
 resource "aws_security_group_rule" "cluster_egress_internet" {
-    count = length(var.additional_security_group_ids) == 0 ? 1 : 0
+    count = var.create_additional_security_group ? 1 : 0
 
     protocol          = "-1"
     security_group_id = aws_security_group.main[0].id

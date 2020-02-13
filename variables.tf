@@ -49,6 +49,12 @@ variable "public_access_cidrs" {
     description = "Indicates whether or not the Amazon EKS private API server endpoint is enabled."
 }
 
+variable "create_additional_security_group" {
+    type        = bool
+    default     = false
+    description = "Indicates whether or not to create additional security group."
+}
+
 variable "additional_security_group_ids" {
     type        = list(string)
     default     = []
