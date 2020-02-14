@@ -13,22 +13,22 @@ variable "vpc_id" {
     description = "VPC ID."
 }
 
+variable "additional_security_group_ids" {
+    type        = list(string)
+    default     = []
+    description = "List of security group IDs for the cross-account elastic network interfaces that Amazon EKS creates to use to allow communication between your worker nodes and the Kubernetes control plane."
+}
+
+variable "create_additional_security_group" {
+    type        = bool
+    default     = false
+    description = "Indicates whether or not to create additional security group."
+}
+
 variable "enabled_cluster_log_types" {
     type        = list(string)
     default     = []
     description = "A list of the desired control plane logging to enable. ['api','audit', 'authenticator', 'controllerManager', 'scheduler']"
-}
-
-variable "role_arn" {
-    type        = string
-    default     = ""
-    description = " The Amazon Resource Name (ARN) of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
-}
-
-variable "kubernetes_version" {
-    type        = string
-    default     = "1.14"
-    description = "Desired Kubernetes master version. If you do not specify a value, the latest available version at resource creation is used and no upgrades will occur except those automatically triggered by EKS. The value must be configured and increased to upgrade the version when desired. Downgrades are not supported by EKS."
 }
 
 variable "endpoint_private_access" {
@@ -43,22 +43,22 @@ variable "endpoint_public_access" {
     description = "Indicates whether or not the Amazon EKS public API server endpoint is enabled."
 }
 
+variable "kubernetes_version" {
+    type        = string
+    default     = "1.14"
+    description = "Desired Kubernetes master version. If you do not specify a value, the latest available version at resource creation is used and no upgrades will occur except those automatically triggered by EKS. The value must be configured and increased to upgrade the version when desired. Downgrades are not supported by EKS."
+}
+
 variable "public_access_cidrs" {
     type        = list(string)
     default     = ["0.0.0.0/0"]
     description = "Indicates whether or not the Amazon EKS private API server endpoint is enabled."
 }
 
-variable "create_additional_security_group" {
-    type        = bool
-    default     = false
-    description = "Indicates whether or not to create additional security group."
-}
-
-variable "additional_security_group_ids" {
-    type        = list(string)
-    default     = []
-    description = "List of security group IDs for the cross-account elastic network interfaces that Amazon EKS creates to use to allow communication between your worker nodes and the Kubernetes control plane."
+variable "role_arn" {
+    type        = string
+    default     = ""
+    description = " The Amazon Resource Name (ARN) of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
 }
 
 variable "tags" {
