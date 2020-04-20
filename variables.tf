@@ -58,7 +58,7 @@ variable "public_access_cidrs" {
 variable "role_arn" {
     type        = string
     default     = ""
-    description = " The Amazon Resource Name (ARN) of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
+    description = "The Amazon Resource Name (ARN) of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
 }
 
 variable "tags" {
